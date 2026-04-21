@@ -1,10 +1,3 @@
-"""
-Stock Data Analysis Script
-ACC102 Python Data Product Assignment
-
-This script performs analysis on stock data to generate insights
-for investment decisions and market trends.
-"""
 
 import pandas as pd
 import numpy as np
@@ -51,9 +44,9 @@ def calculate_returns(df):
         Data with return columns added
     """
     df = df.copy()
-    # Daily returns
+   
     df['Daily_Return'] = df['Close'].pct_change()
-    # Cumulative returns
+  
     df['Cumulative_Return'] = (1 + df['Daily_Return']).cumprod() - 1
     return df
 
@@ -152,11 +145,10 @@ def analyze_stock(ticker='AAPL', days=365):
     print(f"Stock Analysis Report: {ticker}")
     print(f"{'='*50}\n")
     
-    # Set date range
+   
     end_date = datetime.now()
     start_date = end_date - timedelta(days=days)
-    
-    # Get data
+  
     df = get_stock_data(ticker, start_date, end_date)
     
     if df.empty:
@@ -165,15 +157,15 @@ def analyze_stock(ticker='AAPL', days=365):
     
     print(f"Data loaded: {len(df)} trading days")
     
-    # Calculate metrics
+   
     df = calculate_returns(df)
     df = calculate_moving_averages(df)
     df = calculate_volatility(df)
     
-    # Generate summary
+   
     summary = generate_summary_statistics(df)
     
-    # Print summary
+   
     print("\n--- Summary Statistics ---\n")
     for key, value in summary.items():
         if isinstance(value, float):
@@ -238,7 +230,7 @@ def compare_stocks(tickers, days=365):
         except Exception as e:
             print(f"Error analyzing {ticker}: {e}")
     
-    # Create comparison dataframe
+   
     comparison_df = pd.DataFrame(results)
     comparison_df = comparison_df.set_index('End Date')
     
@@ -247,20 +239,15 @@ def compare_stocks(tickers, days=365):
     
     return comparison_df
 
-# Main execution
+
 if __name__ == "__main__":
-    # Example: Analyze a single stock
+   
     print("Running stock analysis...")
     
-    # Analyze Apple stock
+   
     result = analyze_stock('AAPL', days=365)
     
     if result:
-        # Save results to CSV
+      
         result['data'].to_csv('stock_analysis_results.csv')
         print("\n✓ Analysis complete! Results saved to 'stock_analysis_results.csv'")
-    
-    # Example: Compare multiple stocks
-    # Uncomment to compare multiple stocks
-    # comparison = compare_stocks(['AAPL', 'MSFT', 'GOOGL'], days=365)
-    # comparison.to_csv('stock_comparison.csv')
