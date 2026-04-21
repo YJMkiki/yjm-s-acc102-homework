@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import plotly.express as px
 from datetime import datetime, timedelta
 
 st.set_page_config(
@@ -41,7 +41,6 @@ df = pd.DataFrame({
 df = df.round(2)
 
 st.subheader("Data Sample")
-
 st.dataframe(df.head(10), width='stretch')
 
 st.subheader("Basic Statistics")
@@ -49,19 +48,21 @@ avg_price = df["Close"].mean()
 st.write(f"📊 Average Closing Price: **$ {avg_price:.2f}**")
 
 st.subheader("Price Trend Chart")
-fig, ax = plt.subplots(figsize=(10, 5))
-ax.plot(df['Date'], df['Close'], color='#1f77b4', linewidth=2, label='Close Price')
-ax.fill_between(df['Date'], df['Close'], alpha=0.2, color='#1f77b4')
-ax.set_title(f"{ticker} Stock Price Trend (Last 180 Days)")
-ax.set_xlabel("Date")
-ax.set_ylabel("Price (USD)")
-ax.grid(True, alpha=0.3)
-
-ax.tick_params(axis='x', rotation=45)
-ax.legend()
-st.pyplot(fig)
-
-plt.close(fig)
+fig = px.line(
+    df, 
+    x='Date', 
+    y='Close',
+    title=f"{ticker} Stock Price Trend (Last 180 Days)",
+    labels={'Date': 'Date', 'Close': 'Price (USD)'}
+)
+fig.update_traces(line=dict(color='#1f77b4', width=2), fill='tozeroy', fillcolor='rgba(31,119,180,0.2)')
+fig.update_layout(
+    xaxis_title="Date",
+    yaxis_title="Price (USD)",
+    hovermode='x unified',
+    template='plotly_white'
+)
+st.plotly_chart(fig, use_container_width=True)
 
 st.markdown("---")
 st.write("📌 Built with Streamlit for ACC102 Track 4")
