@@ -41,7 +41,8 @@ df = pd.DataFrame({
 df = df.round(2)
 
 st.subheader("Data Sample")
-st.dataframe(df.head(10), use_container_width=True)
+
+st.dataframe(df.head(10), width='stretch')
 
 st.subheader("Basic Statistics")
 avg_price = df["Close"].mean()
@@ -55,9 +56,12 @@ ax.set_title(f"{ticker} Stock Price Trend (Last 180 Days)")
 ax.set_xlabel("Date")
 ax.set_ylabel("Price (USD)")
 ax.grid(True, alpha=0.3)
-plt.xticks(rotation=45)
+
+ax.tick_params(axis='x', rotation=45)
 ax.legend()
 st.pyplot(fig)
+
+plt.close(fig)
 
 st.markdown("---")
 st.write("📌 Built with Streamlit for ACC102 Track 4")
